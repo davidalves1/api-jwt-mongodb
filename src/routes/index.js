@@ -1,5 +1,4 @@
 const { Router } = require('express')
-// const { version } = require('../../package.json')
 
 const router = Router()
 

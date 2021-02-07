@@ -21,20 +21,20 @@ const userSchema = new Schema(
   }
 )
 
-const PASSWORD_LENGTH = 8
+const PASSWORD_MAXLENGTH = 8
 const TOKEN_SECRET = 'secret'
 
-userSchema.pre('save', async (next) => {
+userSchema.pre('save', async function (next) {
   const user = this
 
   if (user.isModified('password')) {
-    user.password = await bcrypt.hash(user.password, PASSWORD_LENGTH)
+    user.password = await bcrypt.hash(user.password, PASSWORD_MAXLENGTH)
   }
 
   next()
 })
 
-userSchema.methods.generateAuthToken = async () => {
+userSchema.methods.generateAuthToken = async function () {
   const user = this
 
   const { _id, name, email } = user
@@ -47,7 +47,7 @@ userSchema.methods.generateAuthToken = async () => {
   return token
 }
 
-userSchema.methods.findByCredentials = async (email, password) => {
+userSchema.statics.findByCredentials = async (email, password) => {
   const user = await User.findOne({ email })
 
   if (!user) {

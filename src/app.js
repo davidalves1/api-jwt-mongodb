@@ -2,10 +2,7 @@ const express = require('express')
 const cors = require('cors')
 const morgan = require('morgan')
 const mongoose = require('mongoose')
-const routes = require('./routes')
 const database = require('./config/db.config')
-
-console.log('ENV', process.env.NODE_ENV)
 
 const env = process.env.NODE_ENV || 'development'
 
@@ -31,6 +28,12 @@ app.use(express.urlencoded({ extended: true }))
 app.use(express.json())
 app.use(cors())
 app.use(morgan('dev'))
+
+// ROUTES
+const routes = require('./routes')
+const userRoutes = require('./routes/user.routes')
+
 app.use(routes)
+app.use('/api/v1', userRoutes)
 
 module.exports = app
